@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: burlywood;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'DM Sans', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        #registrationForm {
+            box-shadow: 0px 4px 16px rgba(0,0,0,0.15);
+            padding: 30px 24px;
+            border-radius: 12px;
+            width: 340px;
+            background-color: white;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        label {
+            font-weight: 700;
+            color: #222;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            border-color: #4a90e2;
+        }
+
+        input.valid   { border-color: #27ae60; }
+        input.invalid { border-color: #e74c3c; }
+
+        select {
+            background-color: bisque;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 11.5px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            font-weight: 400;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .section-label {
+            font-weight: 700;
+            color: #222;
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        /* ── Submit button ── */
+        #submitBtn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        #submitBtn:hover:not(:disabled) {
+            background-color: #357abd;
+        }
+
+        #submitBtn:disabled {
+            background-color: #9abfe8;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* ── Success message ── */
+        #msg {
+            display: none;
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0px 4px 16px rgba(0,0,0,0.15);
+            width: 340px;
+        }
+
+        #msg h2 { color: #27ae60; margin-bottom: 10px; }
+        #msg p  { color: #555; font-size: 15px; }
+
+        /* password hint */
+        .hint {
+            font-size: 11px;
+            color: #888;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- REGISTRATION FORM -->
+    <div id="registrationForm">
+        <h1>Student Registration Form</h1>
+
+        <!-- Name -->
+        <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" oninput="validateAll()">
+            <div class="error" id="nameErr"></div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="text" id="email" oninput="validateAll()">
+            <div class="error" id="emailErr"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" oninput="validateAll()">
+            <div class="hint">8 chars: 3 letters + 4 digits + 1 special character</div>
+            <div class="error" id="passwordErr"></div>
+        </div>
+
+        <!-- City -->
+        <div class="field">
+            <label for="city">City</label>
+            <select id="city" onchange="validateAll()">
+                <option value="">-- Select City --</option>
+                <option value="islamabad">Islamabad</option>
+                <option value="Karachi">Karachi</option>
+                <option value="lahore">Lahore</option>
+            </select>
+            <div class="error" id="cityErr">Please select a city.</div>
+        </div>
+
+        <!-- Gender -->
+        <div class="field">
+            <span class="section-label">Gender</span>
+            <div class="radio-group">
+                <label><input type="radio" value="Female" name="Gender" onchange="validateAll()"> Female</label>
+                <label><input type="radio" value="Male"   name="Gender" onchange="validateAll()"> Male</label>
+                <label><input type="radio" value="Other"  name="Gender" onchange="validateAll()"> Other</label>
+            </div>
+            <div class="error" id="genderErr">Please select your gender.</div>
+        </div>
+
+        <!-- Hobbies -->
+        <div class="field">
+            <span class="section-label">Hobbies</span>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="hobby" value="Reading Books" onchange="validateAll()"> Reading Books</label>
+                <label><input type="checkbox" name="hobby" value="Sports"        onchange="validateAll()"> Sports</label>
+                <label><input type="checkbox" name="hobby" value="Coding"        onchange="validateAll()"> Coding</label>
+                <label><input type="checkbox" name="hobby" value="Music"         onchange="validateAll()"> Music</label>
+            </div>
+            <div class="error" id="hobbiesErr">Please select at least one hobby.</div>
+        </div>
+
+        <button id="submitBtn" disabled onclick="submitForm()">Submit</button>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div id="msg">
+        <h2>✅ Form Submitted Successfully!</h2>
+        <p>Thank you for registering.</p>
+    </div>
+
+    <script>
+
+        /* ── Individual validators — return true if valid ── */
+
+        function validateName() {
+            var val = document.getElementById('name').value.trim();
+            var err = document.getElementById('nameErr');
+            var inp = document.getElementById('name');
+
+            if (val === '') {
+                err.textContent = 'Name cannot be empty.';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            if (val.length !== 3) {
+                err.textContent = 'Name must be exactly 3 characters.';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            err.style.display = 'none';
+            inp.className = 'valid';
+            return true;
+        }
+
+        function validateEmail() {
+            var val = document.getElementById('email').value.trim();
+            var err = document.getElementById('emailErr');
+            var inp = document.getElementById('email');
+
+            if (val === '' || !val.includes('@') || !val.endsWith('.com')) {
+                err.textContent = 'Email must contain "@" and end with ".com".';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            err.style.display = 'none';
+            inp.className = 'valid';
+            return true;
+        }
+
+        function validatePassword() {
+            var val = document.getElementById('password').value;
+            var err = document.getElementById('passwordErr');
+            var inp = document.getElementById('password');
+
+            // Count letters, digits, special chars
+            var letters  = (val.match(/[a-zA-Z]/g)   || []).length;
+            var digits   = (val.match(/[0-9]/g)       || []).length;
+            var specials = (val.match(/[^a-zA-Z0-9]/g)|| []).length;
+
+            if (val.length !== 8) {
+                err.textContent = 'Password must be exactly 8 characters.';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            if (letters !== 3) {
+                err.textContent = 'Password must contain exactly 3 letters.';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            if (digits !== 4) {
+                err.textContent = 'Password must contain exactly 4 digits.';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            if (specials < 1) {
+                err.textContent = 'Password must contain at least 1 special character.';
+                err.style.display = 'block';
+                inp.className = 'invalid';
+                return false;
+            }
+            err.style.display = 'none';
+            inp.className = 'valid';
+            return true;
+        }
+
+        function validateCity() {
+            var val  = document.getElementById('city').value;
+            var err  = document.getElementById('cityErr');
+            var show = (val === '');
+            err.style.display = show ? 'block' : 'none';
+            return !show;
+        }
+
+        function validateGender() {
+            var checked = document.querySelector('input[name="Gender"]:checked');
+            var err = document.getElementById('genderErr');
+            err.style.display = checked ? 'none' : 'block';
+            return !!checked;
+        }
+
+        function validateHobbies() {
+            var checked = document.querySelectorAll('input[name="hobby"]:checked');
+            var err = document.getElementById('hobbiesErr');
+            err.style.display = (checked.length === 0) ? 'block' : 'none';
+            return checked.length > 0;
+        }
+
+        /* ── Run all validators and toggle submit button ── */
+        function validateAll() {
+            var allValid =
+                validateName()     &
+                validateEmail()    &
+                validatePassword() &
+                validateCity()     &
+                validateGender()   &
+                validateHobbies();
+
+            document.getElementById('submitBtn').disabled = !allValid;
+        }
+
+        /* ── Submit ── */
+        function submitForm() {
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('msg').style.display = 'block';
+        }
+
+    </script>
+
+</body>
+</html>
