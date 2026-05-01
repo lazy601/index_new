@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+</head>
+
+<style>
+body {
+    background-color: burlywood;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+}
+
+/* Success message — hidden by default */
+#msg {
+    display: none;
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.2);
+}
+
+#msg h2 {
+    color: green;
+    margin-bottom: 10px;
+}
+
+#msg p {
+    color: #555;
+    font-size: 15px;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #357abd;
+}
+</style>
+
+<body>
+
+    <!-- FORM — visible by default -->
+    <div id="registrationForm" style="box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.1); padding: 20px; border-radius: 10px; width: 300px; background-color: white;">
+        <h1 style="text-align: center; color: blue;">
+            Student Registration Form
+        </h1>
+
+        <div>
+            <label style="font-weight: bold; color: black;">Name</label><br>
+            <input type="text" id="name" style="width:100%; box-sizing:border-box;">
+            <div class="error" id="nameErr">Name cannot be empty.</div>
+        </div>
+
+        <pre></pre>
+
+        <label style="font-weight: bold; color: black;">Email</label><br>
+        <input type="text" id="email" style="width:100%; box-sizing:border-box;">
+        <div class="error" id="emailErr">Enter a valid email containing @.</div>
+
+        <pre></pre>
+
+        <label style="font-weight: bold; color: black;">Password</label><br>
+        <input type="password" id="password" style="width:100%; box-sizing:border-box;">
+        <div class="error" id="passwordErr">Password must be at least 6 characters.</div>
+
+        <pre></pre>
+
+        <label style="font-weight: bold; color: black;">City</label><br>
+        <select id="city" name="City" style="padding: 10px 15px; border: 1px solid #ccc; border-radius: 5px; width: 100%; box-sizing: border-box; background-color: bisque;">
+            <option value="">-- Select City --</option>
+            <option value="islamabad">Islamabad</option>
+            <option value="Karachi">Karachi</option>
+            <option value="lahore">Lahore</option>
+        </select>
+        <div class="error" id="cityErr">Please select a city.</div>
+
+        <div style="font-weight: bold; color: black;">
+            <p><b>Gender:</b></p>
+            <label><input type="radio" value="Female" name="Gender"> Female</label><br>
+            <label><input type="radio" value="Male"   name="Gender"> Male</label><br>
+            <label><input type="radio" value="Other"  name="Gender"> Other</label><br>
+            <div class="error" id="genderErr">Please select your gender.</div>
+        </div>
+
+        <div style="font-weight: bold; color: black;">
+            <p><b>Hobbies:</b></p>
+            <label><input type="checkbox" name="hobby" value="Reading Books"> Reading Books</label><br>
+            <label><input type="checkbox" name="hobby" value="Sports"> Sports</label><br>
+            <label><input type="checkbox" name="hobby" value="Coding"> Coding</label><br>
+            <label><input type="checkbox" name="hobby" value="Music"> Music</label><br>
+            <div class="error" id="hobbiesErr">Please select at least one hobby.</div>
+        </div>
+
+        <br>
+        <input type="submit" value="Submit" onclick="submitForm()">
+    </div>
+
+    <!-- SUCCESS MESSAGE — hidden by default (display:none) -->
+    <div id="msg">
+        <h2>✅ Form Submitted Successfully!</h2>
+        <p>Thank you for registering.</p>
+    </div>
+
+    <script>
+
+        function submitForm() {
+            var valid = true;
+
+            var name = document.getElementById('name').value.trim();
+            if (name === '') {
+                document.getElementById('nameErr').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('nameErr').style.display = 'none';
+            }
+
+            var email = document.getElementById('email').value.trim();
+            if (email === '' || !email.includes('@')) {
+                document.getElementById('emailErr').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('emailErr').style.display = 'none';
+            }
+
+            var password = document.getElementById('password').value;
+            if (password === '' || password.length < 6) {
+                document.getElementById('passwordErr').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('passwordErr').style.display = 'none';
+            }
+
+            var city = document.getElementById('city').value;
+            if (city === '') {
+                document.getElementById('cityErr').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('cityErr').style.display = 'none';
+            }
+
+            var gender = document.querySelector('input[name="Gender"]:checked');
+            if (!gender) {
+                document.getElementById('genderErr').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('genderErr').style.display = 'none';
+            }
+
+            var hobbies = document.querySelectorAll('input[name="hobby"]:checked');
+            if (hobbies.length === 0) {
+                document.getElementById('hobbiesErr').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('hobbiesErr').style.display = 'none';
+            }
+
+            if (valid) {
+                // Hide the form
+                document.getElementById('registrationForm').style.display = 'none';
+
+                // Show the success message
+                document.getElementById('msg').style.display = 'block';
+            }
+        }
+
+    </script>
+
+</body>
+</html>
